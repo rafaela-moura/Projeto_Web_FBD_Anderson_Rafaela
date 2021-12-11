@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina inicial</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="{% static 'core/assets/favicon.ico' %}"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="{% static 'https://use.fontawesome.com/releases/v5.15.4/js/all.js' %}"
+            crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="{% static 'core/https://fonts.googleapis.com/css?family=Montserrat:400,700' %}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'core/https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' %}"
+          rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'core/css/styles.css' %}" rel="stylesheet"/>
+</head>
+<style>
+    #imgpos2 {
+        position: absolute;
+        left: 150px;
+        top: 90%
+    }
+    h6 {
+        position: absolute;
+        left: 300px;
+        top: 90%
+
+    }
+
+
+
+</style>
+<body id="page-top">
+
+<!-- Masthead-->
+<header class="masthead">
+    <div class="container">
+        <div class="masthead-heading text-uppercase">Bem Vindo ao Mundo de Entreterimento!</div>
+        <div class="masthead-subheading">Divirtam-se</div>
+        <a class="btn btn-primary  text-uppercase" href="http://127.0.0.1:8000/accounts/login/">Login</a>
+        <a class="btn btn-primary  text-uppercase" href="http://127.0.0.1:8000/accounts/signup/">Cadastro</a>
+    </div>
+    <div>
+        <img src="{% static 'core/assets/img/navbar-logo123.png' %}" alt="image" height="50" width="" id="imgpos2"/>
+        <h6> A empresa World of Imagination apresenta um site para buscar Extra Entertainment!!
+            Desenvolvedores: Anderson Silva / Rafaéla Moura
+            <p> Contatos para suporte: (87) 98888-8888 / (87) 79999-8888</p></h6>
+
+        <h6></h6>
+    </div>
+</header>
+
+
+<!-- Bootstrap core JS-->
+<script src="{ % static 'core/https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js' %}"></script>
+<!-- Core theme JS-->
+<script src="{% static 'core/js/scripts.js' %}"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script src="{% static 'core/https://cdn.startbootstrap.com/sb-forms-latest.js' %}"></script>
+
+</body>
+</html>

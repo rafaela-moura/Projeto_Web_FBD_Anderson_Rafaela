@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="{% static 'core/assets/favicon.ico' %}"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'core/css/styles.css' %}" rel="stylesheet"/>
+</head>
+<body id="page-top">
+
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-black fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="#page-top"><img src="{% static 'core/assets/img/navbar-logo123.png' %}"
+                                                      alt="image" height="900" width="150" /></a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                <li class="nav-item"><a class="nav-link" href="#filmes">Filmes</a></li>
+                <li class="nav-item"><a class="nav-link" href="#series">Séries</a></li>
+                <li class="nav-item"><a class="nav-link" href="#animes">Animes</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'core:listagem_agenda' %}">Ver Agenda</a></li>
+
+                <li class="nav-item"><a class="nav-link">Bem-vindo, {{request.user.username}}</a></li>
+                <li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/accounts/logout/">Sair</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- filmes Grid-->
+<section class="page-section bg-black" id="filmes">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Filmes</h2>
+        </div>
+        <div class="row">
+            {%for filme in filmes%}
+            <div class="col-lg-4 col-sm-6 mb-4">
+
+                <div class="portfolio-item">
+                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModalFilme{{filme.id}}">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                        </div>
+                        <img class="img-fluid" src="{{filme.capa.url}}" alt="..."/>
+                    </a>
+                    <div class="portfolio-caption">
+                        <div class="portfolio-caption-heading">{{filme.titulo}}</div>
+                    </div>
+                </div>
+                <div class="portfolio-modal modal fade" id="portfolioModalFilme{{filme.id}}" tabindex="-1" role="dialog"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="close-modal" data-bs-dismiss="modal"><img
+                                    src="{% static 'core/assets/img/close-icon.svg' %}" alt="Close modal"/></div>
+                            <div class="container">
+                                <div class="row justify-content-center">
+
+                                    <div class="modal-body">
+                                        <!-- Project details-->
+                                        <h2 class="text-uppercase">{{filme.titulo}}</h2>
+                                        <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                        <img class="img-fluid d-block mx-auto"
+                                             src="{{filme.capa.url}}" alt="..."
+                                         height="400" width=" 450"/>
+                                        <p>{{filme.descricao}}</p>
+                                        <ul class="list-inline">
+                                            <li>
+                                                <strong>Gênero:</strong>
+                                                 {{filme.getGenero}}
+                                            </li>
+                                            <li>
+                                                <strong>Duração:</strong>
+                                                {{filme.tempo_duracao}}
+                                            </li>
+                                            <li>
+                                                <strong>Disponível:</strong>
+                                                {{filme.getIdioma}}
+                                            </li>
+                                        </ul>
+                                        {%if filme.verificar_agenda_filme%}
+                                        <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
+                                           href="{% url 'core:listagem_agenda' %}"
+                                           type="button">
+                                            <i class="fas fa-times me-1"></i>
+                                            Ver Agenda
+                                        </a>
+                                        {%else%}
+                                        <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
+                                           href="{% url 'core:agendar' filme.pk %}?status=Assistindo"
+                                           type="button" onclick="openNewTab('{{filme.link}}')">
+                                            <i class="fas fa-times me-1"></i>
+                                            Assistir Agora
+                                        </a>
+                                        <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
+                                           href="{% url 'core:agendar' filme.pk %}?status=Planejamento"
+                                           type="button">
+                                            <i class="fas fa-times me-1"></i>
+                                            Agendar
+                                        </a>
+                                        {%endif%}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+</section>
+<!-- series Grid-->
+<section class="page-section bg-black" id="series">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Séries</h2>
+        </div>
+        <div class="row">
+            {%for serie in series%}
+            <div class="col-lg-4 col-sm-6 mb-4">
+                <div class="portfolio-item">
+                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModalSerie{{serie.id}}">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                        </div>
+                        <img class="img-fluid" src="{{serie.capa.url}}" alt="..."/>
+                    </a>
+                    <div class="portfolio-caption">
+                        <div class="portfolio-caption-heading">{{serie.titulo}}</div>
+                    </div>
+                </div>
+                <div class="portfolio-modal modal fade" id="portfolioModalSerie{{serie.id}}" tabindex="-1" role="dialog"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="close-modal" data-bs-dismiss="modal"><img
+                                    src="{% static 'core/assets/img/close-icon.svg' %}" alt="Close modal"/></div>
+                            <div class="container">
+                                <div class="row justify-content-center">
+
+                                    <div class="modal-body">
+                                        <!-- Project details-->
+                                        <h2 class="text-uppercase">{{serie.titulo}}</h2>
+                                        <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                        <img class="img-fluid d-block mx-auto"
+                                             src="{{serie.capa.url}}" alt="..."
+                                         height="400" width=" 450"/>
+                                        <p>{{serie.descricao}}</p>
+                                        <ul class="list-inline">
+                                            <li>
+                                                <strong>Gênero:</strong>
+                                                {{serie.getGenero}}
+                                            </li>
+                                            <li>
+                                                <strong>Temporadas:</strong>
+                                                {{serie.temporadas}}
+                                            </li>
+                                            <li>
+                                                <strong>Disponível:</strong>
+                                                {{serie.getIdioma}}
+                                            </li>
+                                        </ul>
+                                        {%if serie.verificar_agenda_serie%}
+                                        <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
+                                           href="{% url 'core:listagem_agenda' %}"
+                                           type="button">
+                                            <i class="fas fa-times me-1"></i>
+                                            Ver Agenda
+                                        </a>
+                                        {%else%}
+                                        <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
+                                           href="{% url 'core:agendar' serie.pk %}?status=Assistindo"
+                                           type="button" onclick="openNewTab('{{serie.link}}')">
+                                            <i class="fas fa-times me-1"></i>
+                                            Assistir Agora
+                                        </a>
+                                        <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
+                                           href="{% url 'core:agendar' serie.pk %}?status=Planejamento"
+                                           type="button">
+                                            <i class="fas fa-times me-1"></i>
+                                            Agendar
+                                        </a>
+                                        {%endif%}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+</section>
+<!-- animes Grid-->
+<section class="page-section bg-black" id="animes">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Animes</h2>
+        </div>
+        <div class="row">
+            {%for anime in animes%}
+            <div class="col-lg-4 col-sm-6 mb-4">
+                <div class="portfolio-item">
+                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModalAnime{{anime.id}}">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                        </div>
+                        <img class="img-fluid" src="{{anime.capa.url}}" alt="..."/>
+                    </a>
+                    <div class="portfolio-caption">
+                        <div class="portfolio-caption-heading">{{anime.titulo}}</div>
+                    </div>
+                </div>
+                <div class="portfolio-modal modal fade" id="portfolioModalAnime{{anime.id}}" tabindex="-1" role="dialog"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="close-modal" data-bs-dismiss="modal"><img
+                                    src="{% static 'core/assets/img/close-icon.svg' %}" alt="Close modal"/></div>
+                            <div class="container">
+                                <div class="row justify-content-center">
+
+                                    <div class="modal-body">
+                                        <!-- Project details-->
+                                        <h2 class="text-uppercase">{{anime.titulo}}</h2>
+                                        <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                        <img class="img-fluid d-block mx-auto"
+                                             src="{{anime.capa.url}}" alt="..."
+                                         height="400" width=" 450"/>
+                                        <p>{{anime.descricao}}</p>
+                                        <ul class="list-inline">
+                                            <li>
+                                                <strong>Gênero:</strong>
+                                                 {{anime.getGenero}}
+                                            </li>
+                                            <li>
+                                                <strong>Temporadas:</strong>
+                                                {{anime.temporadas}}
+                                            </li>
+                                            <li>
+                                                <strong>Disponível:</strong>
+                                                {{anime.getIdioma}}
+                                            </li>
+                                        </ul>
+                                        {%if anime.verificar_agenda_anime%}
+                                        <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
+                                           href="{% url 'core:listagem_agenda' %}"
+                                           type="button">
+                                            <i class="fas fa-times me-1"></i>
+                                            Ver Agenda
+                                        </a>
+                                        {%else%}
+                                        <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
+                                           href="{% url 'core:agendar' anime.pk %}?status=Assistindo"
+                                           type="button" onclick="openNewTab('{{anime.link}}')">
+                                            <i class="fas fa-times me-1"></i>
+                                            Assistir Agora
+                                        </a>
+                                        <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
+                                           href="{% url 'core:agendar' anime.pk %}?status=Planejamento"
+                                           type="button">
+                                            <i class="fas fa-times me-1"></i>
+                                            Agendar
+                                        </a>
+                                        {%endif%}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+</section>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="{% static 'core/js/scripts.js' %}"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+
+<script>
+
+    function openNewTab(url){
+        window.open(url, '_blank').focus(); //Abrir um nova janela com o link do filme/serie/anime
+    }
+
+</script>
+
+
+</body>
+</html>
