@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 STATUS_CHOICE = (
     ("EM_ANDAMENTO", "Em Andamento"),
     ("CONCLUIDO", "Concluido"),
@@ -53,9 +52,6 @@ class Filme(Conteudos):
 
 class Anime(Conteudos):
     quant_episodio = models.IntegerField(verbose_name="Quantidade de Episódio")
-    ep_atual = models.IntegerField(verbose_name="Ep atual")
-    temp_atual = models.IntegerField(verbose_name="Temp atual")
-
     status = models.CharField(max_length=20, verbose_name="Status", choices=STATUS_CHOICE)
     temporadas = models.IntegerField()
 
@@ -78,6 +74,8 @@ class Agenda(models.Model):
     filme = models.ForeignKey("Filme", null=True, blank=True, on_delete=models.PROTECT)
     serie = models.ForeignKey("Serie", null=True, blank=True, on_delete=models.PROTECT)
     anime = models.ForeignKey("Anime", null=True, blank=True, on_delete=models.PROTECT)
+    episodio_atual = models.IntegerField(verbose_name="Episódio atual", null=True, blank=True, default=1)
+    temporada_atual = models.IntegerField(verbose_name="Temporada atual", null=True, blank=True, default=1)
 
     def opcao(self):
         if self.status == "Assistindo":

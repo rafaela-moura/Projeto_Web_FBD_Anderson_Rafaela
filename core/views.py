@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from .models import Filme, Serie, Anime, Agenda
+from django.http import JsonResponse
 
 
 class HomePageView(TemplateView):
@@ -62,12 +63,28 @@ def agendar(request, pk):
 #tipo_ep_ou_temporada = se é ep ou a temporada que está sendo alterado
 
 
-def alterar_episodio(request):
-    print("ENTROU AQUI")
-    # if tipo == "anime":
-    #     if tipo_ep_ou_temporada == 'ep':
-    #         Anime.objects.filter(id=id).update(ep_atual = numero_ep_ou_temporada)
-    #     elif tipo_ep_ou_temporada == 'temp':
-    #         Anime.objects.filter(id=id).update(temp_atual=numero_ep_ou_temporada)
+def alterar_episodio_temporada(request):
 
-    return {"status": "Erro"}
+    direcao = request.GET.get('direcao', None)
+    idAgenda = request.GET.get('idAgenda', None)
+    epOuTemp = request.GET.get('epOuTemp', None)
+
+
+    agenda = Agenda.objects.get(pk = idAgenda)
+
+    if direcao == "voltar":
+        if epOuTemp == "ep":
+            agenda.episodio_atual = agenda.episodio_atual - 1
+        elif epOuTemp == "temp":
+            agenda.temporada_atual = agenda.temporada_atual - 1
+    elif direcao == "proximo":
+        if epOuTemp == "ep":
+            agenda.episodio_atual = agenda.episodio_atual + 1
+        elif epOuTemp == "temp":
+            agenda.temporada_atual = agenda.temporada_atual + 1
+
+    agenda.save()
+
+    return JsonResponse(
+        {epOuTemp: agenda.episodio_atual if epOuTemp == "ep" else agenda.temporada_atual}
+    )

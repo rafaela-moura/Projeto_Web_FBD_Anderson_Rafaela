@@ -9,5 +9,5 @@ urlpatterns = [
     path("", views.HomePageView.as_view(), name="listagem"),
     path("mudar_agenda_status/<int:pk>/", views.mudar_status_agenda, name="mudar_status_agenda"),
     path("agendar/<int:pk>/", views.agendar, name="agendar"),
-    path("altera-ep-temporada/", views.alterar_episodio, name="alterar_ep_temp")
+    path("altera-ep-temporada/", views.alterar_episodio_temporada, name="alterar_ep_temp")
 ]

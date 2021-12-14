@@ -34,12 +34,11 @@
     th{
         text-align :center
     }
-
-
-
-
-
-
+    .tamanho{
+        width: 30px;
+        height: 10px;
+        text-align: center
+    }
 </style>
 <body>
 
@@ -162,8 +161,8 @@
                     <tr>
                         <th>Titulo</th>
                         <th colspan="2">Opções</th>
-                        <th colspan="2">Episodio</th>
-                        <th colspan="2">Temporada</th>
+                        <th colspan="3">Episodio</th>
+                        <th colspan="3">Temporada</th>
                         <th>Acesse aqui</th>
                     </tr>
                     {%for serie in series%}
@@ -175,19 +174,27 @@
                         </td>
                         {%endfor%}
                         <td>
-                            <p id="ep_serie">0</p>
-
+                            <a type="button" onclick="trocarEpTemporada('voltar', {{serie.pk}}, 'ep')"><<</a>
                         </td>
-                        <td>
-                            <a class="tamanho" id="btn_ep_serie" type="button">>></a>
-                        </td>
-                        <td>
-                            <p1 id="temp_serie">0</p1>
 
-                        </td>
                         <td>
-                            <a class="tamanho" id="btn_temp_serie" type="button">>></a>
+                            <p class="tamanho" id="ep_{{serie.pk}}">{{serie.episodio_atual}}</p>
+                        </td>
 
+                        <td>
+                            <a type="button" onclick="trocarEpTemporada('proximo', {{serie.pk}}, 'ep')">>></a>
+                        </td>
+
+                        <td>
+                            <a type="button" onclick="trocarEpTemporada('voltar', {{serie.pk}}, 'temp')"><<</a>
+                        </td>
+
+                        <td>
+                            <p1 class="tamanho" id="temp_{{serie.pk}}">{{serie.temporada_atual}}</p1>
+                        </td>
+
+                        <td>
+                            <a type="button" onclick="trocarEpTemporada('proximo', {{serie.pk}},  'temp')">>></a>
                         </td>
                         <td>
                             <a href="{{serie.serie.link}}" target="_blank">Assistir </a>
@@ -278,8 +285,8 @@
                     <tr>
                         <th>Titulo</th>
                         <th colspan="2">Opções</th>
-                        <th colspan="2">Episodio</th>
-                        <th colspan="2">Temporada</th>
+                        <th colspan="3">Episodio</th>
+                        <th colspan="3">Temporada</th>
                         <th>Acesse aqui</th>
                     </tr>
                     {%for anime in animes%}
@@ -291,19 +298,27 @@
                         </td>
                         {%endfor%}
                         <td>
-                            <p id="ep_anime">0</p>
-
+                            <a type="button" onclick="trocarEpTemporada('voltar', {{anime.pk}}, 'ep')"><<</a>
                         </td>
-                        <td>
-                            <a class="tamanho" id="btn_ep_anime" type="button">>></a>
-                        </td>
-                        <td>
-                            <p1 id="temp_anime">0</p1>
 
-                        </td>
                         <td>
-                            <a class="tamanho" id="btn_temp_anime" name="anime_ep_{{anime.anime.pk}}" type="button">>></a>
+                            <p class="tamanho" id="ep_{{anime.pk}}">{{anime.episodio_atual}}</p>
+                        </td>
 
+                        <td>
+                            <a type="button" onclick="trocarEpTemporada('proximo', {{anime.pk}}, 'ep')">>></a>
+                        </td>
+
+                        <td>
+                            <a type="button" onclick="trocarEpTemporada('voltar', {{anime.pk}}, 'temp')"><<</a>
+                        </td>
+
+                        <td>
+                            <p1 class="tamanho" id="temp_{{anime.pk}}">{{anime.temporada_atual}}</p1>
+                        </td>
+
+                        <td>
+                            <a type="button" onclick="trocarEpTemporada('proximo', {{anime.pk}},  'temp')">>></a>
                         </td>
                         <td>
                             <a href="{{anime.anime.link}}" target="_blank">Assistir </a>
@@ -394,107 +409,46 @@
 
 
 <script>
-
     function openNewTab(url){
         window.open(url, '_blank').focus(); //Abrir um nova janela com o link do filme/serie/anime
     }
 
 
+    function trocarEpTemporada(direcao, idAgenda, epOuTemp){
+        console.log(direcao);
+        console.log(idAgenda);
+        console.log(epOuTemp);
 
-</script>
+        let url = `/altera-ep-temporada/?direcao=${direcao}&idAgenda=${idAgenda}&epOuTemp=${epOuTemp}`
 
-<script>
-    const btnEp$ = document.getElementById('btn_ep_serie');
-    const p$ = document.getElementById('ep_serie');
-
-    let ep_serie = 0;
-    p$.innerHTML = ep_serie;
-
-    btnEp$.addEventListener('click' , function() {
-        ep_serie ++;
-        p$.innerHTML = ep_serie;
-    });
-
-
-
-</script>
-
-<script>
-    const btnTemp$ = document.getElementById('btn_temp_serie');
-    const p1$ = document.getElementById('temp_serie');
-
-    let temp_serie = 0;
-    p1$.innerHTML = temp_serie;
-
-    btnTemp$.addEventListener('click' , function() {
-        temp_serie ++;
-        p1$.innerHTML = temp_serie;
-    });
-
-
-</script>
-
-
-<script>
-    const btnEpAnime$ = document.getElementById('btn_ep_anime');
-    const pAnime$ = document.getElementById('ep_anime');
-
-    let ep_anime = 0;
-    pAnime$.innerHTML = ep_anime;
-
-    btnEpAnime$.addEventListener('click' , function() {
-        console.log(ep_anime)
-        ep_anime ++;
-        pAnime$.innerHTML = ep_anime;
-
-        axios.post('altera-ep-temporada/', {
-            tipo: 'anime',
-            id: '',
-            numeroEpOuTemporada: ep_anime,
-            tipoEpOuTemporada: 'ep',
-          })
+        axios.get(url)
           .then(function (response) {
-            console.log(response);
+
+            console.log(response)
+
+            if (epOuTemp === "ep"){
+                const displayEpisodio = document.getElementById(`ep_${idAgenda}`)
+
+                displayEpisodio.innerHTML = response.data.ep;
+
+
+            }
+            else if (epOuTemp === "temp"){
+                const displayTemporada = document.getElementById(`temp_${idAgenda}`)
+                console.log(displayTemporada);
+                displayTemporada.innerHTML = response.data.temp;
+            }
           })
-          .catch(function (error) {
-            console.log(error);
-          });
-    });
+
+
+
+    }
+
+
 
 
 
 </script>
 
-<script>
-    const btnTempAnime$ = document.getElementById('btn_temp_anime');
-    const idAnime = btnTempAnime$.name.split("_")[2];
-
-    console.log(idAnime);
-
-    const pAnime1$ = document.getElementById('temp_anime');
-
-    let temp_anime = 0;
-    pAnime1$.innerHTML = temp_anime;
-
-    btnTempAnime$.addEventListener('click' , function() {
-        temp_anime ++;
-        pAnime1$.innerHTML = temp_anime;
-
-        axios.post('altera-ep-temporada/', {
-            tipo: 'anime',
-            id: idAnime,
-            numeroEpOuTemporada: temp_anime,
-            tipoEpOuTemporada: 'temp',
-          })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-    });
-
-
-</script>
 </body>
 </html>
