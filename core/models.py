@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.urls import reverse
-from django.db.models.base import Model
+
 
 STATUS_CHOICE = (
     ("EM_ANDAMENTO", "Em Andamento"),
@@ -51,26 +50,20 @@ class Conteudos(models.Model):
 class Filme(Conteudos):
     tempo_duracao = models.CharField(max_length=10, verbose_name="Tempo de Duração")
 
-    def verificar_agenda_filme(self):
-        return Agenda.objects.filter(filme=self.pk).exists()
-
 
 class Anime(Conteudos):
     quant_episodio = models.IntegerField(verbose_name="Quantidade de Episódio")
+    ep_atual = models.IntegerField(verbose_name="Ep atual")
+    temp_atual = models.IntegerField(verbose_name="Temp atual")
+
     status = models.CharField(max_length=20, verbose_name="Status", choices=STATUS_CHOICE)
     temporadas = models.IntegerField()
-
-    def verificar_agenda_anime(self):
-        return Agenda.objects.filter(anime=self.pk).exists()
 
 
 class Serie(Conteudos):
     quant_episodio = models.IntegerField(verbose_name="Quantidade de Episódio")
     status = models.CharField(max_length=20, verbose_name="Status", choices=STATUS_CHOICE)
     temporadas = models.IntegerField()
-
-    def verificar_agenda_serie(self):
-        return Agenda.objects.filter(serie=self.pk).exists()
 
 
 class Agenda(models.Model):

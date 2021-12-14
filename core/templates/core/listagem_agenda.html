@@ -38,13 +38,15 @@
 
 
 
+
+
 </style>
 <body>
 
 
 <section>
     <h1>
-        <img  src="{% static 'core/assets/img/navbar-logo123.png' %}" alt="image" height="50" width=""id="imgpos2"/>
+        <img src="{% static 'core/assets/img/navbar-logo123.png' %}" alt="image" height="50" width="" id="imgpos2"/>
 
         <font color="#FFFF00" face="times"> Minha Agenda</font>
     </h1>
@@ -160,6 +162,8 @@
                     <tr>
                         <th>Titulo</th>
                         <th colspan="2">Opções</th>
+                        <th colspan="2">Episodio</th>
+                        <th colspan="2">Temporada</th>
                         <th>Acesse aqui</th>
                     </tr>
                     {%for serie in series%}
@@ -170,6 +174,21 @@
                         <td><a href="{% url 'core:mudar_status_agenda' serie.pk %}{{button.url}}">{{button.label}}</a>
                         </td>
                         {%endfor%}
+                        <td>
+                            <p id="ep_serie">0</p>
+
+                        </td>
+                        <td>
+                            <a class="tamanho" id="btn_ep_serie" type="button">>></a>
+                        </td>
+                        <td>
+                            <p1 id="temp_serie">0</p1>
+
+                        </td>
+                        <td>
+                            <a class="tamanho" id="btn_temp_serie" type="button">>></a>
+
+                        </td>
                         <td>
                             <a href="{{serie.serie.link}}" target="_blank">Assistir </a>
                         </td>
@@ -259,6 +278,8 @@
                     <tr>
                         <th>Titulo</th>
                         <th colspan="2">Opções</th>
+                        <th colspan="2">Episodio</th>
+                        <th colspan="2">Temporada</th>
                         <th>Acesse aqui</th>
                     </tr>
                     {%for anime in animes%}
@@ -269,6 +290,21 @@
                         <td><a href="{% url 'core:mudar_status_agenda' anime.pk %}{{button.url}}">{{button.label}}</a>
                         </td>
                         {%endfor%}
+                        <td>
+                            <p id="ep_anime">0</p>
+
+                        </td>
+                        <td>
+                            <a class="tamanho" id="btn_ep_anime" type="button">>></a>
+                        </td>
+                        <td>
+                            <p1 id="temp_anime">0</p1>
+
+                        </td>
+                        <td>
+                            <a class="tamanho" id="btn_temp_anime" name="anime_ep_{{anime.anime.pk}}" type="button">>></a>
+
+                        </td>
                         <td>
                             <a href="{{anime.anime.link}}" target="_blank">Assistir </a>
                         </td>
@@ -353,6 +389,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
         crossorigin="anonymous"></script>
+<!--Axios - Requisições Assincronas-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 
 <script>
 
@@ -362,12 +401,100 @@
 
 
 
+</script>
 
+<script>
+    const btnEp$ = document.getElementById('btn_ep_serie');
+    const p$ = document.getElementById('ep_serie');
 
+    let ep_serie = 0;
+    p$.innerHTML = ep_serie;
+
+    btnEp$.addEventListener('click' , function() {
+        ep_serie ++;
+        p$.innerHTML = ep_serie;
+    });
 
 
 
 </script>
 
+<script>
+    const btnTemp$ = document.getElementById('btn_temp_serie');
+    const p1$ = document.getElementById('temp_serie');
+
+    let temp_serie = 0;
+    p1$.innerHTML = temp_serie;
+
+    btnTemp$.addEventListener('click' , function() {
+        temp_serie ++;
+        p1$.innerHTML = temp_serie;
+    });
+
+
+</script>
+
+
+<script>
+    const btnEpAnime$ = document.getElementById('btn_ep_anime');
+    const pAnime$ = document.getElementById('ep_anime');
+
+    let ep_anime = 0;
+    pAnime$.innerHTML = ep_anime;
+
+    btnEpAnime$.addEventListener('click' , function() {
+        console.log(ep_anime)
+        ep_anime ++;
+        pAnime$.innerHTML = ep_anime;
+
+        axios.post('altera-ep-temporada/', {
+            tipo: 'anime',
+            id: '',
+            numeroEpOuTemporada: ep_anime,
+            tipoEpOuTemporada: 'ep',
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    });
+
+
+
+</script>
+
+<script>
+    const btnTempAnime$ = document.getElementById('btn_temp_anime');
+    const idAnime = btnTempAnime$.name.split("_")[2];
+
+    console.log(idAnime);
+
+    const pAnime1$ = document.getElementById('temp_anime');
+
+    let temp_anime = 0;
+    pAnime1$.innerHTML = temp_anime;
+
+    btnTempAnime$.addEventListener('click' , function() {
+        temp_anime ++;
+        pAnime1$.innerHTML = temp_anime;
+
+        axios.post('altera-ep-temporada/', {
+            tipo: 'anime',
+            id: idAnime,
+            numeroEpOuTemporada: temp_anime,
+            tipoEpOuTemporada: 'temp',
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    });
+
+
+</script>
 </body>
 </html>

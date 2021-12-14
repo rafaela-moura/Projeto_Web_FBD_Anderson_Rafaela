@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 {% load static %}
+{% load custom_tags %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -85,7 +86,11 @@
                                                 {{filme.getIdioma}}
                                             </li>
                                         </ul>
-                                        {%if filme.verificar_agenda_filme%}
+
+                                        {% verificar_agendar filme.pk 'filme' request.user.pk as verificar_filme %}
+
+
+                                        {% if verificar_filme %}
                                         <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
                                            href="{% url 'core:listagem_agenda' %}"
                                            type="button">
@@ -167,7 +172,9 @@
                                                 {{serie.getIdioma}}
                                             </li>
                                         </ul>
-                                        {%if serie.verificar_agenda_serie%}
+                                        {% verificar_agendar serie.pk 'serie' request.user.pk as verificar_serie %}
+
+                                        {% if verificar_serie %}
                                         <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
                                            href="{% url 'core:listagem_agenda' %}"
                                            type="button">
@@ -249,7 +256,9 @@
                                                 {{anime.getIdioma}}
                                             </li>
                                         </ul>
-                                        {%if anime.verificar_agenda_anime%}
+                                        {% verificar_agendar anime.pk 'anime' request.user.pk as verificar_anime %}
+
+                                        {% if verificar_anime %}
                                         <a class="portfolio-link btn btn-primary btn-xl text-uppercase"
                                            href="{% url 'core:listagem_agenda' %}"
                                            type="button">

@@ -54,3 +54,20 @@ def agendar(request, pk):
         Agenda.objects.create(anime=anime, user=request.user, status=status)
 
     return redirect("listagem")
+
+
+
+#tipo = filme ou anime
+#numero_ep_ou_temporada = numero referente ao ep ou a temporada (que foi alterado)
+#tipo_ep_ou_temporada = se é ep ou a temporada que está sendo alterado
+
+
+def alterar_episodio(request):
+    print("ENTROU AQUI")
+    # if tipo == "anime":
+    #     if tipo_ep_ou_temporada == 'ep':
+    #         Anime.objects.filter(id=id).update(ep_atual = numero_ep_ou_temporada)
+    #     elif tipo_ep_ou_temporada == 'temp':
+    #         Anime.objects.filter(id=id).update(temp_atual=numero_ep_ou_temporada)
+
+    return {"status": "Erro"}
