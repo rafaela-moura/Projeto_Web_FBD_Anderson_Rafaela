@@ -20,11 +20,11 @@ def listagem(request):
 @login_required
 def listagem_agenda(request):
     context = {}
-    context['filmes'] = Agenda.objects.filter(user=request.user, serie__isnull=True, anime__isnull=True)
-    context['series'] = Agenda.objects.filter(user=request.user, filme__isnull=True, anime__isnull=True)
-    context['animes'] = Agenda.objects.filter(user=request.user, serie__isnull=True, filme__isnull=True)
-    for agenda in Agenda.objects.filter(user=request.user, serie__isnull=True, anime__isnull=True):
-        print(agenda)
+
+    context['assistindos'] = Agenda.objects.filter(user=request.user, status = "Assistindo")
+    context['planejamentos'] = Agenda.objects.filter(user=request.user, status="Planejamento")
+    context['concluidos'] = Agenda.objects.filter(user=request.user, status="Concluído")
+    context['desistindos'] = Agenda.objects.filter(user=request.user, status="Desistiu")
 
     return render(request, 'core/listagem_agenda.html', context)
 
@@ -35,7 +35,12 @@ def inicio(request):
 
 def mudar_status_agenda(request, pk):
     novo_status = request.GET.get("novo_status", None)
+
+    print(novo_status)
+    print(pk)
+
     if pk != None and novo_status != None:
+        print("ENTROU")
         Agenda.objects.filter(pk=pk).update(status=novo_status)
     return redirect("core:listagem_agenda")
 

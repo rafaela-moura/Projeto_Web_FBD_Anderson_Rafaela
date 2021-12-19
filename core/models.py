@@ -102,3 +102,19 @@ class Agenda(models.Model):
 
         print(buttons)
         return buttons
+
+    def get_conteudo(self):
+        if self.filme != None:
+            return self.filme
+        elif self.anime != None:
+            return self.anime
+        elif self.serie != None:
+            return self.serie
+
+    def get_categoria(self):
+        if self.filme != None:
+            return "Filme"
+        elif self.anime != None:
+            return "Anime"
+        elif self.serie != None:
+            return "Serie"
